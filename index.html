@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>STVM · Sổ Tay Việt Mỹ — Học thi quốc tịch Mỹ</title>
+<style>
+:root{
+  --navy:#0B3D91; --navy-d:#072a66; --red:#D62828; --red-d:#a51f1f;
+  --gold:#FFD400; --ink:#17233b; --mut:#5b6b8c; --bg:#eef2fa; --card:#ffffff;
+  --ok:#1d9e6c; --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Be Vietnam Pro",Arial,sans-serif;background:var(--bg);color:var(--ink);max-width:480px;margin:0 auto;min-height:100%;position:relative;box-shadow:0 0 40px rgba(11,61,145,.12)}
+.hidden{display:none!important}
+
+/* ============ SPLASH ============ */
+#splash{position:fixed;inset:0;z-index:50;max-width:480px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;
+  background:radial-gradient(1200px 700px at 50% -10%, #1550b8 0%, var(--navy) 45%, var(--navy-d) 100%)}
+#splash .stars{position:absolute;inset:0;pointer-events:none}
+#splash .star{position:absolute;color:#fff;opacity:.85;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:.95;transform:scale(1.15)}}
+.splash-flag{width:120px;height:80px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.35);margin-bottom:22px;animation:wave 3.2s ease-in-out infinite;transform-origin:center}
+@keyframes wave{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.04)}}
+.splash-flag svg{display:block;width:100%;height:100%}
+.emblem{width:150px;height:150px;border-radius:50%;background:conic-gradient(from 200deg,var(--red) 0 18%, #fff 18% 36%, var(--navy) 36% 54%, var(--red) 54% 72%, #fff 72% 90%, var(--navy) 90% 100%);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 14px 40px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,255,255,.25);animation:pop .7s cubic-bezier(.2,1.4,.4,1)}
+.emblem span{background:var(--navy-d);color:#fff;font-weight:900;font-size:44px;letter-spacing:2px;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--gold)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.splash-name{font-size:15px;letter-spacing:6px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.splash-title{font-size:34px;font-weight:900;letter-spacing:1px;margin-bottom:10px;text-shadow:0 3px 12px rgba(0,0,0,.35)}
+.splash-sub{font-size:15px;opacity:.92;margin-bottom:4px}
+.splash-sub2{font-size:13px;opacity:.7;margin-bottom:30px}
+.splash-btn{background:var(--red);color:#fff;border:none;font-size:18px;font-weight:800;padding:16px 52px;border-radius:999px;cursor:pointer;box-shadow:0 8px 24px rgba(214,40,40,.5);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.splash-stripes{position:absolute;bottom:0;left:0;right:0;height:14px;background:repeating-linear-gradient(180deg,var(--red) 0 4px,#fff 4px 8px,var(--navy) 8px 14px)}
+
+/* ============ APP FRAME ============ */
+#app{min-height:100%;display:flex;flex-direction:column}
+header.top{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.logo-mini{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--navy);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;border:2px solid var(--gold);flex-shrink:0}
+.top h1{font-size:17px;font-weight:800;line-height:1.25}
+.top p{font-size:12px;opacity:.85}
+main{flex:1;padding:16px 16px 34px}
+.screen{animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#fff,#eaf0fd);border-radius:var(--radius);padding:20px;box-shadow:0 4px 16px rgba(11,61,145,.1);border:1px solid #dbe4f7;margin-bottom:16px}
+.hero h2{font-size:21px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.hero p{font-size:14px;color:var(--mut);margin-bottom:14px}
+.pbar{height:12px;background:#dbe4f7;border-radius:99px;overflow:hidden;margin-bottom:8px}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:99px;transition:width .4s}
+.pmeta{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:16px}
+.btnrow{display:flex;gap:10px}
+.btn{flex:1;border:none;border-radius:14px;padding:15px 10px;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-red{background:linear-gradient(135deg,var(--red),var(--red-d));color:#fff;box-shadow:0 6px 16px rgba(214,40,40,.35)}
+.btn-navy{background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;box-shadow:0 6px 16px rgba(11,61,145,.35)}
+.btn-ghost{background:#fff;color:var(--navy);border:2px solid #dbe4f7}
+.btn:active{transform:scale(.97)}
+
+.sect{font-size:15px;font-weight:800;color:var(--navy);margin:18px 2px 10px;letter-spacing:.3px}
+.cat{background:#fff;border-radius:var(--radius);padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:12px;box-shadow:0 3px 12px rgba(11,61,145,.08);border:1px solid #e6ecfa;cursor:pointer}
+.cat:active{transform:scale(.98)}
+.cat-ic{width:58px;height:58px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff}
+.cat h3{font-size:17px;font-weight:800;margin-bottom:3px}
+.cat p{font-size:13px;color:var(--mut)}
+.cat .go{margin-left:auto;font-size:22px;color:#b9c6e4}
+.revcard{background:linear-gradient(135deg,#fff8e1,#ffefc2);border:1px solid #f3dfa0;border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:6px}
+.revcard b{font-size:16px}.revcard span{font-size:13px;color:#8a6d1a;display:block}
+.note{font-size:12px;color:var(--mut);text-align:center;margin-top:18px;line-height:1.6;padding:0 10px}
+
+/* question list */
+.backrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.backbtn{background:#fff;border:1px solid #dbe4f7;border-radius:12px;width:42px;height:42px;font-size:20px;cursor:pointer;color:var(--navy)}
+.backrow h2{font-size:18px;font-weight:800;color:var(--navy)}
+.subhead{font-size:14px;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--navy),#2a5fc0);display:inline-block;padding:6px 14px;border-radius:99px;margin:14px 0 8px}
+.qrow{background:#fff;border-radius:14px;padding:13px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 8px rgba(11,61,145,.06);cursor:pointer;border:1px solid #edf1fa}
+.qrow .n{width:34px;height:34px;border-radius:50%;background:#eaf0fd;color:var(--navy);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qrow.done .n{background:var(--ok);color:#fff}
+.qrow p{font-size:14.5px;line-height:1.45}
+.qrow .st{margin-left:auto;font-size:18px;flex-shrink:0}
+
+/* study card */
+.sprog{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px;color:var(--mut);font-weight:700}
+.sprog .pbar{flex:1;margin:0}
+.scard{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 8px 28px rgba(11,61,145,.14);border:1px solid #e2e9fa}
+.scard img.qimg{width:100%;height:210px;object-fit:cover;display:block;background:linear-gradient(135deg,var(--navy),var(--red))}
+.qimg-fallback{height:190px;display:flex;align-items:center;justify-content:center;font-size:88px;background:linear-gradient(135deg,var(--navy-d),var(--navy) 45%,#2a5fc0 70%,var(--red));text-shadow:0 6px 20px rgba(0,0,0,.35)}
+.sbody{padding:20px}
+.qlabel{font-size:12px;font-weight:800;color:var(--red);letter-spacing:1.5px;margin-bottom:8px}
+.qen{font-size:20px;font-weight:800;line-height:1.5;margin-bottom:14px}
+.speakbtn{background:#eaf0fd;color:var(--navy);border:2px solid #c9d8f5;border-radius:12px;padding:12px 18px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;margin-bottom:6px}
+.speakbtn:active{transform:scale(.96)}
+.revealbtn{width:100%;margin-top:12px;background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;border:none;border-radius:14px;padding:16px;font-size:17px;font-weight:800;cursor:pointer}
+.answer{margin-top:16px;animation:fade .3s}
+.achip{display:inline-block;background:#eaf3ff;border:1.5px solid #bcd0f5;color:var(--navy);font-weight:700;font-size:15.5px;border-radius:10px;padding:8px 12px;margin:0 6px 8px 0;line-height:1.4}
+.trbox{background:#f4f7ff;border-radius:12px;padding:14px;margin-top:6px;font-size:15px;line-height:1.65}
+.trbox .tvi{color:var(--mut);font-size:14px;margin-top:8px}
+.meo{margin-top:12px;background:linear-gradient(135deg,#fff8e1,#fff3c4);border:1.5px dashed #e0b93c;border-radius:14px;padding:14px;font-size:15px;line-height:1.65}
+.meo b{color:#9a6b00}
+.grade{display:flex;gap:10px;margin-top:16px}
+.gbtn{flex:1;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:800;cursor:pointer}
+.g-no{background:#fdecec;color:var(--red);border:2px solid #f5c6c6}
+.g-yes{background:#e6f7ef;color:var(--ok);border:2px solid #bfe8d2}
+.gbtn:active{transform:scale(.96)}
+
+/* quiz end */
+.scorewrap{text-align:center;padding:30px 10px}
+.scorewrap .big{font-size:72px;font-weight:900;color:var(--navy)}
+.scorewrap h2{font-size:22px;margin:8px 0}
+.scorewrap p{color:var(--mut);font-size:15px;line-height:1.6;margin-bottom:20px}
+footer.appfoot{text-align:center;font-size:11.5px;color:#93a0bd;padding:14px}
+</style>
+</head>
+<body>
+
+<!-- ================= SPLASH ================= -->
+<div id="splash">
+  <div class="stars" id="stars"></div>
+  <div class="splash-flag">
+    <svg viewBox="0 0 120 80"><rect width="120" height="80" fill="#fff"/>
+      <g><rect width="120" height="6.15" y="0" fill="#D62828"/><rect width="120" height="6.15" y="12.3" fill="#D62828"/><rect width="120" height="6.15" y="24.6" fill="#D62828"/><rect width="120" height="6.15" y="36.9" fill="#D62828"/><rect width="120" height="6.15" y="49.2" fill="#D62828"/><rect width="120" height="6.15" y="61.5" fill="#D62828"/><rect width="120" height="6.15" y="73.8" fill="#D62828"/></g>
+      <rect width="52" height="43" fill="#0B3D91"/>
+      <g fill="#fff"><circle cx="10" cy="9" r="3"/><circle cx="26" cy="9" r="3"/><circle cx="42" cy="9" r="3"/><circle cx="18" cy="20" r="3"/><circle cx="34" cy="20" r="3"/><circle cx="10" cy="31" r="3"/><circle cx="26" cy="31" r="3"/><circle cx="42" cy="31" r="3"/></g>
+    </svg>
+  </div>
+  <div class="emblem"><span>STVM</span></div>
+  <div class="splash-name">SỔ TAY VIỆT MỸ</div>
+  <div class="splash-title">Học thi quốc tịch Mỹ</div>
+  <div class="splash-sub">128 câu hỏi · Song ngữ Anh – Việt · Mẹo nhớ dễ thuộc</div>
+  <div class="splash-sub2">Học bằng tai, nhớ bằng hình 🇺🇸</div>
+  <button class="splash-btn" onclick="enterApp()">Bắt đầu học →</button>
+  <div class="splash-stripes"></div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="logo-mini">STVM</div>
+    <div><h1>Sổ Tay Việt Mỹ</h1><p>Học thi quốc tịch Mỹ · 128 câu</p></div>
+  </header>
+  <main>
+    <div id="screen-home" class="screen"></div>
+    <div id="screen-cat" class="screen hidden"></div>
+    <div id="screen-study" class="screen hidden"></div>
+    <div id="screen-quiz" class="screen hidden"></div>
+  </main>
+  <footer class="appfoot">Nội dung theo bộ 128 câu hỏi thi quốc tịch USCIS (2025) · STVM</footer>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const IMG = {
+flag:"https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20the%20United%20States.svg?width=800",
+constitution:"https://commons.wikimedia.org/wiki/Special:FilePath/Constitution%20of%20the%20United%20States%2C%20page%201.jpg?width=800",
+hall:"https://commons.wikimedia.org/wiki/Special:FilePath/Independence%20Hall.jpg?width=800",
+capitol:"https://commons.wikimedia.org/wiki/Special:FilePath/US%20Capitol%20Building%20at%20night%20Jan%202006.jpg?width=800",
+whitehouse:"https://commons.wikimedia.org/wiki/Special:FilePath/White%20House%20-%20south%20facade.jpg?width=800",
+court:"https://commons.wikimedia.org/wiki/Special:FilePath/Supreme%20Court%20of%20the%20United%20States%20-%20west%20front.jpg?width=800",
+liberty:"https://commons.wikimedia.org/wiki/Special:FilePath/Statue%20of%20Liberty%2C%20NY.jpg?width=800",
+bell:"https://commons.wikimedia.org/wiki/Special:FilePath/Liberty%20Bell.jpg?width=800",
+eagle:"https://commons.wikimedia.org/wiki/Special:FilePath/Bald%20Eagle.jpg?width=800",
+lincoln:"https://commons.wikimedia.org/wiki/Special:FilePath/Abraham%20Lincoln%20O-77%20matte%20collodion%20print.jpg?width=800",
+washington:"https://commons.wikimedia.org/wiki/Special:FilePath/Gilbert%20Stuart%20Williamstown%20Portrait%20of%20George%20Washington.jpg?width=800",
+jefferson:"https://commons.wikimedia.org/wiki/Special:FilePath/Thomas%20Jefferson%20by%20Rembrandt%20Peale%2C%201800.jpg?width=800",
+franklin:"https://commons.wikimedia.org/wiki/Special:FilePath/Benjamin%20Franklin%20by%20Joseph%20Siffred%20Duplessis%201778.jpg?width=800",
+mlk:"https://commons.wikimedia.org/wiki/Special:FilePath/Martin%20Luther%20King%2C%20Jr..jpg?width=800",
+susan:"https://commons.wikimedia.org/wiki/Special:FilePath/Susan%20B.%20Anthony%201870.jpg?width=800",
+fdr:"https://commons.wikimedia.org/wiki/Special:FilePath/FDR%20in%201933.jpg?width=800",
+eisenhower:"https://commons.wikimedia.org/wiki/Special:FilePath/Eisenhower%20portrait.jpg?width=800",
+pearl:"https://commons.wikimedia.org/wiki/Special:FilePath/Pearl%20Harbor%20-%20USS%20Arizona%20Memorial.jpg?width=800",
+vietmem:"https://commons.wikimedia.org/wiki/Special:FilePath/Vietnam%20Veterans%20Memorial.jpg?width=800"
+};
+const CATS = [
+ {id:"gov", name:"Chính phủ Mỹ", desc:"Hiến pháp · Quốc hội · Tổng thống · Quyền công dân", icon:"🏛️", color:"linear-gradient(135deg,#0B3D91,#2a5fc0)", subs:["Nguyên tắc chính phủ","Hệ thống chính phủ","Quyền & trách nhiệm công dân"]},
+ {id:"hist", name:"Lịch sử Mỹ", desc:"Thuộc địa · Độc lập · Nội chiến · Hiện đại", icon:"📜", color:"linear-gradient(135deg,#8a5a00,#c9930a)", subs:["Thuộc địa & giành độc lập","Những năm 1800","Lịch sử hiện đại"]},
+ {id:"sym", name:"Biểu tượng & Ngày lễ", desc:"Cờ · Tượng Nữ thần Tự do · Các ngày lễ", icon:"🗽", color:"linear-gradient(135deg,#D62828,#f05252)", subs:["Biểu tượng nước Mỹ","Ngày lễ liên bang"]}
+];
+/* q_en/a_en: USCIS public domain · q_vi/a_vi/meo: STVM biên soạn */
+const QUESTIONS = [
+{id:1,cat:"gov",sub:"Nguyên tắc chính phủ",img:"flag",q_en:"What is the form of government of the United States?",a_en:["Republic","Constitution-based federal republic","Representative democracy"],q_vi:"Hình thức chính quyền của Hoa Kỳ là gì?",a_vi:["Cộng hòa","Cộng hòa liên bang theo Hiến pháp","Dân chủ đại nghị"],meo:"💡 Mẹo: Mỹ không có vua → là Cộng hòa. Nhớ chữ R: <b>Republic</b> đọc là “rì-páp-blic”. Trả lời 1 trong 3 đáp án đều đúng."},
+{id:2,cat:"gov",sub:"Nguyên tắc chính phủ",img:"constitution",q_en:"What is the supreme law of the land?",a_en:["The (U.S.) Constitution"],q_vi:"Luật cao nhất của nước Mỹ là gì?",a_vi:["Hiến pháp Hoa Kỳ"],meo:"💡 Mẹo: Luật “tối cao” (supreme) thì chỉ có Hiến pháp — mọi luật khác đều phải nghe lời nó."},
+{id:3,cat:"gov",sub:"Nguyên tắc chính phủ",img:"constitution",q_en:"Name one thing the U.S. Constitution does.",a_en:["Forms the government","Defines powers of government","Protects the rights of the people"],q_vi:"Kể một việc mà Hiến pháp Hoa Kỳ làm.",a_vi:["Thiết lập chính phủ","Xác định quyền hạn của chính phủ","Bảo vệ quyền của người dân"],meo:"💡 Mẹo: Hiến pháp làm 3 việc: <b>dựng</b> chính phủ, <b>chia</b> quyền, <b>bảo vệ</b> dân. Câu dễ nhớ nhất: “Protects the rights of the people”."},
+{id:4,cat:"gov",sub:"Nguyên tắc chính phủ",img:"liberty",q_en:"The U.S. Constitution starts with the words “We the People.” What does “We the People” mean?",a_en:["Self-government","Popular sovereignty","Consent of the governed"],q_vi:"Hiến pháp mở đầu bằng “We the People” (Chúng ta, nhân dân). Cụm từ đó nghĩa là gì?",a_vi:["Chính quyền tự trị","Chủ quyền thuộc về nhân dân","Sự đồng thuận của người dân"],meo:"💡 Mẹo: “We the People” đọc là “uy đờ pi-pồ” = <b>quyền lực từ dân mà ra</b>, không phải từ vua chúa."},
+{id:5,cat:"gov",sub:"Nguyên tắc chính phủ",img:"constitution",q_en:"How are changes made to the U.S. Constitution?",a_en:["Amendments","The amendment process"],q_vi:"Muốn thay đổi Hiến pháp thì làm thế nào?",a_vi:["Bằng Tu chính án","Qua quy trình tu chính án"],meo:"💡 Mẹo: Muốn “sửa” Hiến pháp phải thêm <b>Tu chính án (Amendment)</b>. Hiện có 27 tu chính án."},
+{id:6,cat:"gov",sub:"Nguyên tắc chính phủ",img:"bell",q_en:"What does the Bill of Rights protect?",a_en:["The (basic) rights of Americans","Rights of people living in the United States"],q_vi:"Tuyên ngôn Nhân quyền (Bill of Rights) bảo vệ điều gì?",a_vi:["Các quyền cơ bản của người Mỹ","Quyền của người sống tại Hoa Kỳ"],meo:"💡 Mẹo: Bill of Rights = 10 tu chính án đầu tiên = <b>bảng liệt kê quyền của dân</b> mà chính phủ không được đụng vào."},
+{id:7,cat:"gov",sub:"Nguyên tắc chính phủ",img:"constitution",q_en:"How many amendments does the Constitution have?",a_en:["Twenty-seven (27)"],q_vi:"Hiến pháp có bao nhiêu Tu chính án?",a_vi:["27"],meo:"💡 Mẹo: <b>27</b> — nhớ 10 cái đầu là Bill of Rights, cộng thêm 17 cái sau."},
+{id:8,cat:"gov",sub:"Nguyên tắc chính phủ",img:"hall",q_en:"Why is the Declaration of Independence important?",a_en:["It says America is free from British control","It says all people are created equal"],q_vi:"Tại sao Tuyên ngôn Độc lập lại quan trọng?",a_vi:["Tuyên bố nước Mỹ thoát khỏi sự kiểm soát của Anh","Khẳng định mọi người sinh ra đều bình đẳng"],meo:"💡 Mẹo: 2 ý: <b>thoát Anh + mọi người bình đẳng</b>. Ngày 4/7/1776 — ngày sinh nhật nước Mỹ."},
+{id:9,cat:"gov",sub:"Nguyên tắc chính phủ",img:"hall",q_en:"What founding document said the American colonies were free from Britain?",a_en:["The Declaration of Independence"],q_vi:"Văn bản lập quốc nào tuyên bố các thuộc địa Mỹ thoát khỏi nước Anh?",a_vi:["Tuyên ngôn Độc lập"],meo:"💡 Mẹo: “Giấy khai sinh” của nước Mỹ chính là <b>Tuyên ngôn Độc lập</b>."},
+{id:10,cat:"gov",sub:"Nguyên tắc chính phủ",img:"bell",q_en:"Name two important ideas from the Declaration of Independence and the U.S. Constitution.",a_en:["Equality","Liberty","Limited government"],q_vi:"Kể hai ý tưởng quan trọng trong Tuyên ngôn Độc lập và Hiến pháp.",a_vi:["Bình đẳng","Tự do","Chính phủ bị giới hạn quyền lực"],meo:"💡 Mẹo: Nhớ 2 chữ <b>E–L: Equality (bình đẳng) + Liberty (tự do)</b> — chọn 2 trong 3 đáp án."},
+{id:11,cat:"gov",sub:"Nguyên tắc chính phủ",img:"hall",q_en:"The words “Life, Liberty, and the pursuit of Happiness” are in what founding document?",a_en:["The Declaration of Independence"],q_vi:"Cụm từ “Quyền sống, Tự do và Mưu cầu hạnh phúc” nằm trong văn bản nào?",a_vi:["Tuyên ngôn Độc lập"],meo:"💡 Mẹo: 3 quyền “<b>sống – tự do – mưu cầu hạnh phúc</b>” → Tuyên ngôn Độc lập."},
+{id:12,cat:"gov",sub:"Nguyên tắc chính phủ",img:"flag",q_en:"What is the economic system of the United States?",a_en:["Capitalism","Free market economy"],q_vi:"Hệ thống kinh tế của Hoa Kỳ là gì?",a_vi:["Chủ nghĩa tư bản","Kinh tế thị trường tự do"],meo:"💡 Mẹo: Kinh tế Mỹ = <b>chợ tự do</b> — ai muốn buôn bán gì thì buôn, nhà nước không ép."},
+{id:13,cat:"gov",sub:"Nguyên tắc chính phủ",img:"court",q_en:"What is the “rule of law”?",a_en:["Everyone must follow the law","No one is above the law","Government must obey the law"],q_vi:"“Thượng tôn pháp luật” là gì?",a_vi:["Mọi người đều phải tuân thủ luật","Không ai đứng trên pháp luật","Chính phủ cũng phải tuân thủ luật"],meo:"💡 Mẹo: Thượng tôn pháp luật = <b>không ai đứng trên luật</b>, kể cả tổng thống."},
+{id:14,cat:"gov",sub:"Nguyên tắc chính phủ",img:"constitution",q_en:"Many documents influenced the U.S. Constitution. Name one.",a_en:["The Declaration of Independence","The Articles of Confederation","The Federalist Papers","The Mayflower Compact"],q_vi:"Nhiều tài liệu đã ảnh hưởng đến Hiến pháp. Kể tên một tài liệu.",a_vi:["Tuyên ngôn Độc lập","Các Điều khoản Liên bang","Tuyển tập Federalist Papers","Hiệp ước Mayflower"],meo:"💡 Mẹo: Chọn câu dễ nhất: <b>Declaration of Independence</b> — Tuyên ngôn Độc lập ra trước, Hiến pháp học theo."},
+{id:15,cat:"gov",sub:"Nguyên tắc chính phủ",img:"capitol",q_en:"There are three branches of government. Why?",a_en:["Checks and balances","So one part does not become too powerful","Separation of powers"],q_vi:"Tại sao chính phủ lại chia thành ba nhánh?",a_vi:["Để kiểm tra và cân bằng lẫn nhau","Để không bộ phận nào quá quyền lực","Phân chia quyền lực"],meo:"💡 Mẹo: 3 nhánh như <b>kiềng 3 chân</b> — kiểm tra lẫn nhau để không ai lộng quyền."},
+{id:16,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Name the three branches of government.",a_en:["Legislative, executive, and judicial","Congress, president, and the courts"],q_vi:"Kể tên ba nhánh của chính phủ.",a_vi:["Lập pháp, Hành pháp và Tư pháp","Quốc hội, Tổng thống và Tòa án"],meo:"💡 Mẹo: <b>Làm luật – Thi hành – Xử án</b>: Lập pháp (Congress) → Hành pháp (President) → Tư pháp (Courts)."},
+{id:17,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"The President of the United States is in charge of which branch of government?",a_en:["The executive branch"],q_vi:"Tổng thống phụ trách nhánh nào của chính phủ?",a_vi:["Nhánh Hành pháp"],meo:"💡 Mẹo: Tổng thống “hành động” → nhánh <b>Hành pháp (Executive)</b>."},
+{id:18,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"What part of the federal government writes laws?",a_en:["(U.S.) Congress","The legislative branch"],q_vi:"Bộ phận nào của chính phủ liên bang soạn thảo luật?",a_vi:["Quốc hội Hoa Kỳ","Nhánh Lập pháp"],meo:"💡 Mẹo: Ai <b>viết luật</b>? Quốc hội (Congress). Nhớ: Lập pháp = lập ra luật."},
+{id:19,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"What are the two parts of the U.S. Congress?",a_en:["The Senate and the House of Representatives"],q_vi:"Quốc hội Hoa Kỳ gồm hai bộ phận nào?",a_vi:["Thượng viện và Hạ viện"],meo:"💡 Mẹo: Quốc hội 2 viện: <b>Thượng viện (Senate) + Hạ viện (House)</b> — “thượng” trên, “hạ” dưới."},
+{id:20,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Name one power of the U.S. Congress.",a_en:["Write laws","Declares war","Makes the federal budget"],q_vi:"Kể một quyền lực của Quốc hội Hoa Kỳ.",a_vi:["Soạn thảo luật","Tuyên chiến","Lập ngân sách liên bang"],meo:"💡 Mẹo: Câu dễ nhớ nhất: <b>tuyên chiến (declares war)</b> — chỉ Quốc hội mới được tuyên chiến."},
+{id:21,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"How many U.S. senators are there?",a_en:["100"],q_vi:"Có bao nhiêu Thượng nghị sĩ Hoa Kỳ?",a_vi:["100"],meo:"💡 Mẹo: 50 bang × 2 = <b>100</b> thượng nghị sĩ."},
+{id:22,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"How long is a term for a U.S. senator?",a_en:["6 years"],q_vi:"Một nhiệm kỳ của Thượng nghị sĩ là bao lâu?",a_vi:["6 năm"],meo:"💡 Mẹo: Thượng nghị sĩ ngồi <b>6 năm</b> — ghế “thượng” nên ngồi lâu, ít bị sức ép bầu cử."},
+{id:23,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who is one of your state’s U.S. Senators now?",a_en:["(Answer depends on your state)"],q_vi:"Kể tên một Thượng nghị sĩ của tiểu bang bạn hiện nay.",a_vi:["(Đáp án tùy theo tiểu bang bạn ở)"],meo:"💡 Mẹo: Câu này <b>đáp án theo bang mình ở</b> — tra tên 2 thượng nghị sĩ bang mình trước ngày thi, học thuộc lòng."},
+{id:24,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"How many voting members are in the House of Representatives?",a_en:["435"],q_vi:"Hạ viện có bao nhiêu Dân biểu có quyền bỏ phiếu?",a_vi:["435"],meo:"💡 Mẹo: Hạ viện <b>435</b> dân biểu — đông vì chia theo dân số từng bang."},
+{id:25,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"How long is a term for a member of the House of Representatives?",a_en:["2 years"],q_vi:"Một nhiệm kỳ của Dân biểu Hạ viện là bao lâu?",a_vi:["2 năm"],meo:"💡 Mẹo: Dân biểu chỉ <b>2 năm</b> — nhiệm kỳ ngắn để luôn “sát dân”, không nghe dân là bị thay."},
+{id:26,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Why do U.S. representatives serve shorter terms than U.S. senators?",a_en:["To more closely follow public opinion"],q_vi:"Tại sao Dân biểu Hạ viện có nhiệm kỳ ngắn hơn Thượng nghị sĩ?",a_vi:["Để theo sát ý kiến của người dân hơn"],meo:"💡 Mẹo: Ghế “hạ” gần dân hơn → nhiệm kỳ ngắn để <b>nghe dân kỹ hơn</b>."},
+{id:27,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"How many senators does each state have?",a_en:["2"],q_vi:"Mỗi tiểu bang có bao nhiêu Thượng nghị sĩ?",a_vi:["2"],meo:"💡 Mẹo: Bang nào cũng <b>2 người</b> — bang giàu hay nghèo đều ngang nhau."},
+{id:28,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Why does each state have two senators?",a_en:["Equal representation"],q_vi:"Tại sao mỗi tiểu bang lại có 2 Thượng nghị sĩ?",a_vi:["Để đại diện công bằng"],meo:"💡 Mẹo: Mỗi bang 2 ghế để <b>bang nhỏ có tiếng nói ngang bang lớn</b> — công bằng."},
+{id:29,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Name your U.S. representative.",a_en:["(Answer depends on your district)"],q_vi:"Kể tên Dân biểu Hạ viện của khu vực bạn.",a_vi:["(Đáp án tùy theo địa hạt bạn ở)"],meo:"💡 Mẹo: Câu này <b>đáp án theo địa hạt (khu vực) mình ở</b> — tra tên dân biểu khu mình trước ngày thi."},
+{id:30,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"What is the name of the Speaker of the House of Representatives now?",a_en:["(Mike) Johnson"],q_vi:"Tên của Chủ tịch Hạ viện hiện tại là gì?",a_vi:["Mike Johnson"],meo:"💡 Mẹo: Hiện tại là <b>Mike Johnson</b>. ⚠️ Chức này đổi theo thời sự — kiểm tra lại gần ngày thi."},
+{id:31,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who does a U.S. senator represent?",a_en:["Citizens of their state","People of their state"],q_vi:"Thượng nghị sĩ đại diện cho ai?",a_vi:["Công dân trong tiểu bang của họ","Người dân trong tiểu bang của họ"],meo:"💡 Mẹo: Thượng nghị sĩ = đại diện <b>cả bang</b>."},
+{id:32,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who elects U.S. senators?",a_en:["Citizens of their state"],q_vi:"Ai bầu ra Thượng nghị sĩ?",a_vi:["Công dân trong tiểu bang của họ"],meo:"💡 Mẹo: <b>Dân trong bang</b> bầu thượng nghị sĩ của bang mình."},
+{id:33,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who does a member of the House of Representatives represent?",a_en:["Citizens in their (congressional) district"],q_vi:"Một Dân biểu Hạ viện đại diện cho ai?",a_vi:["Công dân trong địa hạt bầu cử của họ"],meo:"💡 Mẹo: Dân biểu chỉ đại diện <b>địa hạt (khu vực)</b> của mình — hẹp hơn thượng nghị sĩ (cả bang)."},
+{id:34,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who elects members of the House of Representatives?",a_en:["Citizens from their (congressional) district"],q_vi:"Ai bầu ra Dân biểu Hạ viện?",a_vi:["Công dân trong địa hạt bầu cử của họ"],meo:"💡 Mẹo: <b>Dân trong địa hạt</b> bầu dân biểu của địa hạt đó — ai ở đâu bầu người ở đó."},
+{id:35,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Some states have more Representatives than other states. Why?",a_en:["Because they have more people","Because of the state’s population"],q_vi:"Tại sao một số bang có nhiều Dân biểu hơn các bang khác?",a_vi:["Vì bang đó đông dân hơn","Vì dân số của bang đó"],meo:"💡 Mẹo: Hạ viện chia theo <b>đầu người</b> — bang đông dân thì nhiều ghế."},
+{id:36,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"The President of the United States is elected for how many years?",a_en:["4 years"],q_vi:"Tổng thống Hoa Kỳ được bầu với nhiệm kỳ bao nhiêu năm?",a_vi:["4 năm"],meo:"💡 Mẹo: Tổng thống <b>4 năm</b> — nhớ như Olympic 4 năm một lần."},
+{id:37,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"The President of the United States can serve only two terms. Why?",a_en:["Because of the 22nd Amendment","To keep the president from becoming too powerful"],q_vi:"Tại sao Tổng thống chỉ được phục vụ tối đa hai nhiệm kỳ?",a_vi:["Vì Tu chính án thứ 22 quy định","Để tổng thống không trở nên quá quyền lực"],meo:"💡 Mẹo: <b>Tu chính án 22</b> giới hạn 2 nhiệm kỳ — đặt ra sau khi Roosevelt làm tới 4 nhiệm kỳ."},
+{id:38,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"What is the name of the President of the United States now?",a_en:["Donald Trump"],q_vi:"Tên của Tổng thống Hoa Kỳ hiện tại là gì?",a_vi:["Donald Trump"],meo:"💡 Mẹo: Hiện tại là <b>Donald Trump</b>. ⚠️ Đáp án đổi theo thời sự — kiểm tra lại gần ngày thi."},
+{id:39,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"What is the name of the Vice President of the United States now?",a_en:["JD Vance"],q_vi:"Tên của Phó Tổng thống Hoa Kỳ hiện tại là gì?",a_vi:["JD Vance"],meo:"💡 Mẹo: Hiện tại là <b>JD Vance</b>. ⚠️ Kiểm tra lại gần ngày thi."},
+{id:40,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"If the President can no longer serve, who becomes President?",a_en:["The Vice President"],q_vi:"Nếu Tổng thống không thể tiếp tục phục vụ, ai sẽ lên thay?",a_vi:["Phó Tổng thống"],meo:"💡 Mẹo: Thứ tự kế vị: <b>Tổng thống → Phó Tổng thống → Chủ tịch Hạ viện</b>."},
+{id:41,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"Name one power of the president.",a_en:["Signs bills into law","Vetoes bills","Appoints federal judges","Commander in Chief of the military"],q_vi:"Kể một quyền hạn của Tổng thống.",a_vi:["Ký dự luật thành luật","Phủ quyết dự luật","Bổ nhiệm thẩm phán liên bang","Tổng tư lệnh quân đội"],meo:"💡 Mẹo: Câu dễ nhớ nhất: <b>ký dự luật thành luật (signs bills into law)</b>."},
+{id:42,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"Who is the Commander in Chief of the military?",a_en:["The President"],q_vi:"Ai là Tổng tư lệnh quân đội?",a_vi:["Tổng thống"],meo:"💡 Mẹo: Tổng tư lệnh = <b>Tổng thống</b> — người đứng đầu cả nước thì đứng đầu cả quân đội."},
+{id:43,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"Who signs bills to become laws?",a_en:["The President"],q_vi:"Ai ký để dự luật trở thành luật?",a_vi:["Tổng thống"],meo:"💡 Mẹo: Quốc hội <b>thông qua</b> → Tổng thống <b>ký</b> mới thành luật."},
+{id:44,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"Who vetoes bills?",a_en:["The President"],q_vi:"Ai có quyền phủ quyết dự luật?",a_vi:["Tổng thống"],meo:"💡 Mẹo: <b>Veto</b> (phủ quyết) = quyền của Tổng thống. Nhớ chữ V: Veto."},
+{id:45,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"Who appoints federal judges?",a_en:["The President"],q_vi:"Ai bổ nhiệm thẩm phán liên bang?",a_vi:["Tổng thống"],meo:"💡 Mẹo: Thẩm phán liên bang do <b>Tổng thống bổ nhiệm</b> (Thượng viện chuẩn thuận)."},
+{id:46,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"The executive branch has many parts. Name one.",a_en:["The President","The Cabinet","Federal departments and agencies"],q_vi:"Nhánh Hành pháp có nhiều bộ phận. Kể tên một bộ phận.",a_vi:["Tổng thống","Nội các","Các bộ và cơ quan liên bang"],meo:"💡 Mẹo: Nhánh hành pháp gồm: <b>Tổng thống + Nội các + các bộ</b>. Nhớ “Tổng thống” là chắc ăn."},
+{id:47,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"What does the President’s Cabinet do?",a_en:["Advises the President"],q_vi:"Nội các của Tổng thống làm gì?",a_vi:["Cố vấn cho Tổng thống"],meo:"💡 Mẹo: Nội các (Cabinet) = <b>ban cố vấn</b> của Tổng thống — các bộ trưởng họp bàn giúp ông quyết định."},
+{id:48,cat:"gov",sub:"Hệ thống chính phủ",img:"whitehouse",q_en:"What are two Cabinet-level positions?",a_en:["Secretary of State","Attorney General","Secretary of Defense","Secretary of Education"],q_vi:"Kể tên hai vị trí trong Nội các.",a_vi:["Bộ trưởng Ngoại giao","Bộ trưởng Tư pháp","Bộ trưởng Quốc phòng","Bộ trưởng Giáo dục"],meo:"💡 Mẹo: Nhớ 2 cái quen nhất: <b>Secretary of State (Ngoại giao)</b> + <b>Attorney General (Tư pháp)</b>."},
+{id:49,cat:"gov",sub:"Hệ thống chính phủ",img:"flag",q_en:"Why is the Electoral College important?",a_en:["It decides who is elected president"],q_vi:"Tại sao Đại cử tri đoàn lại quan trọng?",a_vi:["Vì nó quyết định ai được bầu làm Tổng thống"],meo:"💡 Mẹo: Ở Mỹ dân không bầu thẳng tổng thống — <b>đại cử tri đoàn mới là người “chốt”</b> ai thắng."},
+{id:50,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"What is one part of the judicial branch?",a_en:["The Supreme Court","Federal Courts"],q_vi:"Kể một bộ phận của nhánh Tư pháp.",a_vi:["Tòa án Tối cao","Các tòa án liên bang"],meo:"💡 Mẹo: Nhánh tư pháp → nhớ ngay <b>Supreme Court (Tòa án Tối cao)</b>."},
+{id:51,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"What does the judicial branch do?",a_en:["Reviews laws","Explains laws","Decides if a law goes against the Constitution"],q_vi:"Nhánh Tư pháp làm gì?",a_vi:["Xem xét luật","Giải thích luật","Quyết định luật có vi hiến hay không"],meo:"💡 Mẹo: Tư pháp = <b>“trọng tài” của luật</b> — xem luật nào có trái Hiến pháp không."},
+{id:52,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"What is the highest court in the United States?",a_en:["The Supreme Court"],q_vi:"Tòa án cao nhất ở Mỹ là gì?",a_vi:["Tòa án Tối cao"],meo:"💡 Mẹo: “Supreme” = tối cao — <b>Supreme Court</b> là tòa cao nhất, phán quyết cuối cùng."},
+{id:53,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"How many seats are on the Supreme Court?",a_en:["9"],q_vi:"Tòa án Tối cao có bao nhiêu ghế thẩm phán?",a_vi:["9"],meo:"💡 Mẹo: <b>9 thẩm phán</b> — số lẻ để biểu quyết không bao giờ hòa."},
+{id:54,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"How many Supreme Court justices are usually needed to decide a case?",a_en:["5"],q_vi:"Cần bao nhiêu thẩm phán Tối cao để quyết định một vụ án?",a_vi:["5"],meo:"💡 Mẹo: 9 người thì <b>quá bán là 5</b> — đa số thắng."},
+{id:55,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"How long do Supreme Court justices serve?",a_en:["For life"],q_vi:"Thẩm phán Tòa án Tối cao phục vụ trong bao lâu?",a_vi:["Suốt đời"],meo:"💡 Mẹo: Thẩm phán Tối cao làm <b>suốt đời</b> — không lo mất ghế, không phải tranh cử."},
+{id:56,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"Supreme Court justices serve for life. Why?",a_en:["To be independent (of politics)"],q_vi:"Tại sao thẩm phán Tối cao lại phục vụ suốt đời?",a_vi:["Để được độc lập (khỏi chính trị)"],meo:"💡 Mẹo: Làm suốt đời để <b>xử độc lập</b> — không sợ ai, không nịnh phe nào."},
+{id:57,cat:"gov",sub:"Hệ thống chính phủ",img:"court",q_en:"Who is the Chief Justice of the United States now?",a_en:["John Roberts"],q_vi:"Ai hiện là Chánh án Tòa án Tối cao Hoa Kỳ?",a_vi:["John Roberts"],meo:"💡 Mẹo: Chánh án hiện tại: <b>John Roberts</b>. ⚠️ Kiểm tra lại gần ngày thi."},
+{id:58,cat:"gov",sub:"Hệ thống chính phủ",img:"flag",q_en:"Name one power that is only for the federal government.",a_en:["Print paper money","Declare war","Create an army","Make treaties"],q_vi:"Kể một quyền lực chỉ thuộc về chính phủ liên bang.",a_vi:["In tiền giấy","Tuyên chiến","Thành lập quân đội","Ký hiệp ước"],meo:"💡 Mẹo: Quyền liên bang = việc <b>“tầm quốc gia”</b>: in tiền, tuyên chiến, ký hiệp ước."},
+{id:59,cat:"gov",sub:"Hệ thống chính phủ",img:"flag",q_en:"Name one power that is only for the states.",a_en:["Give a driver’s license","Provide schooling and education","Provide police protection"],q_vi:"Kể một quyền lực chỉ thuộc về các tiểu bang.",a_vi:["Cấp bằng lái xe","Cung cấp trường học","Cung cấp cảnh sát bảo vệ"],meo:"💡 Mẹo: Quyền của bang = việc <b>“gần dân”</b>: bằng lái, trường học, cảnh sát. Nhớ “bằng lái xe” là dễ nhất."},
+{id:60,cat:"gov",sub:"Hệ thống chính phủ",img:"constitution",q_en:"What is the purpose of the 10th Amendment?",a_en:["Powers not given to the federal government belong to the states or to the people"],q_vi:"Mục đích của Tu chính án thứ 10 là gì?",a_vi:["Quyền nào không trao cho liên bang thì thuộc về bang hoặc người dân"],meo:"💡 Mẹo: Tu chính án 10 = <b>“của ai trả về người nấy”</b>: liên bang không giữ thì về bang và dân."},
+{id:61,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"Who is the Governor of your state now?",a_en:["(Answer depends on your state)"],q_vi:"Ai hiện là Thống đốc tiểu bang của bạn?",a_vi:["(Đáp án tùy theo tiểu bang bạn ở)"],meo:"💡 Mẹo: <b>Đáp án theo bang mình ở</b> — tra tên thống đốc bang mình trước ngày thi."},
+{id:62,cat:"gov",sub:"Hệ thống chính phủ",img:"capitol",q_en:"What is the capital of your state?",a_en:["(Answer depends on your state)"],q_vi:"Thủ phủ của tiểu bang bạn là gì?",a_vi:["(Đáp án tùy theo tiểu bang bạn ở)"],meo:"💡 Mẹo: <b>Thủ phủ theo bang mình ở</b> — tra trước. Ví dụ: California là Sacramento, Texas là Austin."},
+{id:63,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"bell",q_en:"There are four amendments about who can vote. Describe one of them.",a_en:["Citizens eighteen and older can vote","You don’t have to pay a poll tax to vote","Any citizen can vote (men and women)"],q_vi:"Có 4 tu chính án nói về quyền bầu cử. Kể một điều.",a_vi:["Công dân từ 18 tuổi trở lên được bầu cử","Không phải đóng thuế mới được bầu cử","Mọi công dân (nam/nữ) đều được bầu cử"],meo:"💡 Mẹo: Nhớ 1 câu dễ nhất: <b>công dân từ 18 tuổi được bầu cử</b>."},
+{id:64,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"bell",q_en:"Who can vote in federal elections, run for federal office, and serve on a jury in the United States?",a_en:["U.S. citizens"],q_vi:"Ai được bầu cử liên bang, ứng cử chức vụ liên bang và ngồi bồi thẩm đoàn ở Mỹ?",a_vi:["Công dân Hoa Kỳ"],meo:"💡 Mẹo: 3 quyền “xịn” này <b>chỉ công dân Mỹ</b> mới có — thường trú nhân (thẻ xanh) chưa được."},
+{id:65,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"bell",q_en:"What are three rights of everyone living in the United States?",a_en:["Freedom of speech","Freedom of religion","Freedom of assembly","Freedom of expression"],q_vi:"Kể ba quyền của mọi người sống tại Hoa Kỳ.",a_vi:["Tự do ngôn luận","Tự do tôn giáo","Tự do hội họp","Tự do biểu đạt"],meo:"💡 Mẹo: Ai ở Mỹ cũng có — nhớ 3 câu ngắn: <b>ngôn luận, tôn giáo, hội họp</b>."},
+{id:66,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"flag",q_en:"What do we show loyalty to when we say the Pledge of Allegiance?",a_en:["The flag","The United States"],q_vi:"Khi đọc Lời thề trung thành, ta thể hiện lòng trung thành với điều gì?",a_vi:["Lá cờ","Hoa Kỳ"],meo:"💡 Mẹo: Đọc lời thề thì tay đặt lên ngực, mắt nhìn <b>lá cờ</b> — trung thành với cờ và nước Mỹ."},
+{id:67,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"liberty",q_en:"Name two promises that new citizens make in the Oath of Allegiance.",a_en:["Give up loyalty to other countries","Defend the Constitution","Obey the laws of the United States","Be loyal to the United States"],q_vi:"Kể hai lời hứa của công dân mới trong Lễ tuyên thệ.",a_vi:["Từ bỏ trung thành với nước khác","Bảo vệ Hiến pháp","Tuân thủ luật pháp Hoa Kỳ","Trung thành với Hoa Kỳ"],meo:"💡 Mẹo: Ngày tuyên thệ nhập tịch hứa 2 điều: <b>bỏ nước cũ + trung thành nước Mỹ</b>."},
+{id:68,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"liberty",q_en:"How can people become United States citizens?",a_en:["Naturalize","Be born in the United States","Derive citizenship (through parents)"],q_vi:"Làm sao để trở thành công dân Hoa Kỳ?",a_vi:["Nhập tịch","Sinh ra tại Hoa Kỳ","Ăn theo quốc tịch của cha mẹ"],meo:"💡 Mẹo: 3 đường: <b>nhập tịch (thi) – sinh ra ở Mỹ – ăn theo cha mẹ</b>."},
+{id:69,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"capitol",q_en:"What are two examples of civic participation in the United States?",a_en:["Vote","Run for office","Join a political party","Help with a campaign"],q_vi:"Kể hai ví dụ về sự tham gia việc nước của công dân.",a_vi:["Đi bầu cử","Ra ứng cử","Tham gia đảng phái","Hỗ trợ chiến dịch tranh cử"],meo:"💡 Mẹo: Tham gia việc nước = <b>đi bầu + ra ứng cử</b> — 2 câu ngắn nhất."},
+{id:70,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"flag",q_en:"What is one way Americans can serve their country?",a_en:["Pay taxes","Obey the law","Serve in the military","Run for office"],q_vi:"Kể một cách người Mỹ phục vụ đất nước.",a_vi:["Đóng thuế","Tuân thủ luật pháp","Phục vụ quân đội","Ra ứng cử"],meo:"💡 Mẹo: Phục vụ đất nước không cần ra trận — <b>đóng thuế, tuân thủ luật</b> cũng là phục vụ."},
+{id:71,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"capitol",q_en:"Why is it important to pay federal taxes?",a_en:["Required by law","All people pay to fund the federal government","Civic duty"],q_vi:"Tại sao đóng thuế liên bang lại quan trọng?",a_vi:["Vì luật yêu cầu","Để có ngân sách cho chính phủ hoạt động","Là nghĩa vụ công dân"],meo:"💡 Mẹo: Đóng thuế vì <b>luật bắt + lấy tiền nuôi chính phủ</b> (đường sá, quân đội, trường học)."},
+{id:72,cat:"gov",sub:"Quyền & trách nhiệm công dân",img:"flag",q_en:"All men age 18 through 25 must register for the Selective Service. Name one reason why.",a_en:["Required by law","Civic duty","Makes the draft fair, if needed"],q_vi:"Nam giới 18–25 tuổi phải đăng ký quân dịch (Selective Service). Tại sao?",a_vi:["Vì luật yêu cầu","Là nghĩa vụ công dân","Để gọi nhập ngũ công bằng khi cần"],meo:"💡 Mẹo: Nam 18–25 <b>bắt buộc đăng ký</b> — để khi đất nước cần gọi nhập ngũ thì công bằng, ai cũng như ai."},
+{id:73,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"liberty",q_en:"The colonists came to America for many reasons. Name one.",a_en:["Freedom","Religious freedom","Political liberty","Economic opportunity","Escape persecution"],q_vi:"Người di dân đến Mỹ vì nhiều lý do. Kể một lý do.",a_vi:["Tự do","Tự do tôn giáo","Tự do chính trị","Cơ hội kinh tế","Trốn sự đàn áp"],meo:"💡 Mẹo: Tất cả gói trong 1 chữ: <b>TỰ DO</b> — tự do tôn giáo là câu dễ nhớ nhất."},
+{id:74,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"liberty",q_en:"Who lived in America before the Europeans arrived?",a_en:["American Indians","Native Americans"],q_vi:"Ai sống ở Mỹ trước khi người châu Âu đến?",a_vi:["Người da đỏ bản địa","Người Mỹ bản địa"],meo:"💡 Mẹo: Trước người Âu là <b>người da đỏ bản địa (American Indians)</b> — chủ nhà đầu tiên của nước Mỹ."},
+{id:75,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"flag",q_en:"What group of people was taken and sold as slaves?",a_en:["Africans","People from Africa"],q_vi:"Nhóm người nào bị bắt đến Mỹ và bị bán làm nô lệ?",a_vi:["Người châu Phi","Người từ châu Phi"],meo:"💡 Mẹo: Nô lệ bị bắt từ <b>châu Phi</b> sang — “Africans”."},
+{id:76,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"hall",q_en:"What war did the Americans fight to win independence from Britain?",a_en:["The American Revolution","The Revolutionary War"],q_vi:"Người Mỹ đã đánh cuộc chiến nào để giành độc lập khỏi nước Anh?",a_vi:["Cách mạng Mỹ","Chiến tranh Cách mạng"],meo:"💡 Mẹo: Đánh Anh giành độc lập = <b>Cách mạng Mỹ (American Revolution)</b>."},
+{id:77,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"hall",q_en:"Name one reason why the Americans declared independence from Britain.",a_en:["High taxes","Taxation without representation","British soldiers in houses","Lack of self-government"],q_vi:"Kể một lý do người Mỹ tuyên bố độc lập khỏi nước Anh.",a_vi:["Thuế cao","Đóng thuế mà không có đại diện","Lính Anh ở trong nhà dân","Thiếu quyền tự trị"],meo:"💡 Mẹo: Dân thuộc địa tức vì <b>đóng thuế cao mà không có ghế</b> trong quốc hội Anh — “thuế không đại diện”."},
+{id:78,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"jefferson",q_en:"Who wrote the Declaration of Independence?",a_en:["(Thomas) Jefferson"],q_vi:"Ai là người viết Tuyên ngôn Độc lập?",a_vi:["Thomas Jefferson"],meo:"💡 Mẹo: <b>Jefferson</b> viết Tuyên ngôn Độc lập — nhớ “J” như “Just write” (chỉ việc viết)."},
+{id:79,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"hall",q_en:"When was the Declaration of Independence adopted?",a_en:["July 4, 1776"],q_vi:"Tuyên ngôn Độc lập được thông qua khi nào?",a_vi:["Ngày 4 tháng 7 năm 1776"],meo:"💡 Mẹo: <b>4/7/1776</b> — ngày sinh nhật nước Mỹ, cả nước bắn pháo bông."},
+{id:80,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"hall",q_en:"The American Revolution had many important events. Name one.",a_en:["The Declaration of Independence","The Battle of Bunker Hill","Washington crossing the Delaware","The surrender at Yorktown"],q_vi:"Kể một sự kiện quan trọng trong thời Cách mạng Mỹ.",a_vi:["Tuyên ngôn Độc lập","Trận Bunker Hill","Washington vượt sông Delaware","Quân Anh đầu hàng ở Yorktown"],meo:"💡 Mẹo: Nhiều đáp án đúng — chọn cái nhớ nhất: <b>Tuyên ngôn Độc lập</b>."},
+{id:81,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"flag",q_en:"There were 13 original states. Name five.",a_en:["New York, New Jersey, Maryland, North Carolina, South Carolina"],q_vi:"Có 13 tiểu bang đầu tiên. Kể tên 5 bang.",a_vi:["New York, New Jersey, Maryland, North Carolina, South Carolina"],meo:"💡 Mẹo: Học thuộc lòng 5 bang dễ đọc: <b>New York – New Jersey – Maryland – North Carolina – South Carolina</b>."},
+{id:82,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"constitution",q_en:"What founding document was written in 1787?",a_en:["The (U.S.) Constitution"],q_vi:"Văn bản lập quốc nào được viết năm 1787?",a_vi:["Hiến pháp Hoa Kỳ"],meo:"💡 Mẹo: <b>1787 = Hiến pháp</b> — ra đời sau Tuyên ngôn Độc lập (1776) đúng 11 năm."},
+{id:83,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"franklin",q_en:"The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",a_en:["James Madison","Alexander Hamilton","John Jay"],q_vi:"Kể tên một tác giả của tuyển tập Federalist Papers.",a_vi:["James Madison","Alexander Hamilton","John Jay"],meo:"💡 Mẹo: Nhớ <b>Madison</b> — “cha đẻ Hiến pháp” cũng là người viết Federalist Papers."},
+{id:84,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"constitution",q_en:"Why were the Federalist Papers important?",a_en:["They helped people understand the Constitution"],q_vi:"Tại sao Federalist Papers lại quan trọng?",a_vi:["Vì chúng giúp người dân hiểu Hiến pháp"],meo:"💡 Mẹo: Federalist Papers = <b>bài “quảng cáo” cho Hiến pháp</b> — viết để dân hiểu rồi chịu thông qua."},
+{id:85,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"franklin",q_en:"Benjamin Franklin is famous for many things. Name one.",a_en:["U.S. diplomat","Inventor","Founded the first free public libraries","First Postmaster General"],q_vi:"Kể một việc nổi tiếng của Benjamin Franklin.",a_vi:["Nhà ngoại giao Mỹ","Nhà phát minh","Sáng lập thư viện công miễn phí","Tổng trưởng Bưu điện đầu tiên"],meo:"💡 Mẹo: Franklin = ông già <b>mặt trên tờ 100 đô</b> — nhà ngoại giao, nhà phát minh (cột thu lôi)."},
+{id:86,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"washington",q_en:"George Washington is famous for many things. Name one.",a_en:["First president of the United States","Father of Our Country","General of the Continental Army"],q_vi:"Kể một việc nổi tiếng của George Washington.",a_vi:["Tổng thống đầu tiên của Hoa Kỳ","Người cha của đất nước","Tổng tư lệnh Quân đội Lục địa"],meo:"💡 Mẹo: Washington = <b>tổng thống đầu tiên</b>, “cha già dân tộc” Mỹ — mặt trên tờ 1 đô."},
+{id:87,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"jefferson",q_en:"Thomas Jefferson is famous for many things. Name one.",a_en:["Writer of the Declaration of Independence","Third president of the United States","Doubled the size of the United States (Louisiana Purchase)"],q_vi:"Kể một việc nổi tiếng của Thomas Jefferson.",a_vi:["Người viết Tuyên ngôn Độc lập","Tổng thống thứ ba Hoa Kỳ","Mua Louisiana, nhân đôi diện tích nước Mỹ"],meo:"💡 Mẹo: Jefferson = <b>người viết Tuyên ngôn Độc lập</b> + tổng thống thứ 3."},
+{id:88,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"constitution",q_en:"James Madison is famous for many things. Name one.",a_en:["“Father of the Constitution”","Fourth president of the United States","One of the writers of the Federalist Papers"],q_vi:"Kể một việc nổi tiếng của James Madison.",a_vi:["“Cha đẻ của Hiến pháp”","Tổng thống thứ tư Hoa Kỳ","Một trong các tác giả Federalist Papers"],meo:"💡 Mẹo: Madison = <b>“cha đẻ Hiến pháp”</b> — người đẻ ra Hiến pháp thì phải nhớ."},
+{id:89,cat:"hist",sub:"Thuộc địa & giành độc lập",img:"flag",q_en:"Alexander Hamilton is famous for many things. Name one.",a_en:["One of the writers of the Federalist Papers","First Secretary of the Treasury","Helped establish the First Bank of the United States"],q_vi:"Kể một việc nổi tiếng của Alexander Hamilton.",a_vi:["Một trong các tác giả Federalist Papers","Bộ trưởng Tài chính đầu tiên","Giúp lập Ngân hàng đầu tiên của Hoa Kỳ"],meo:"💡 Mẹo: Hamilton = ông <b>mặt trên tờ 10 đô</b> — bộ trưởng tài chính đầu tiên."},
+{id:90,cat:"hist",sub:"Những năm 1800",img:"flag",q_en:"What territory did the United States buy from France in 1803?",a_en:["Louisiana","The Louisiana Territory"],q_vi:"Năm 1803, Mỹ đã mua vùng đất nào của Pháp?",a_vi:["Louisiana","Lãnh thổ Louisiana"],meo:"💡 Mẹo: 1803 mua <b>Louisiana</b> của Pháp — thương vụ “Louisiana Purchase” nhân đôi diện tích nước Mỹ."},
+{id:91,cat:"hist",sub:"Những năm 1800",img:"flag",q_en:"Name one war fought by the United States in the 1800s.",a_en:["The Civil War","The War of 1812","The Mexican-American War","The Spanish-American War"],q_vi:"Kể một cuộc chiến Mỹ tham gia trong những năm 1800.",a_vi:["Nội chiến","Chiến tranh năm 1812","Chiến tranh Mỹ – Mexico","Chiến tranh Mỹ – Tây Ban Nha"],meo:"💡 Mẹo: Nhớ <b>Nội chiến (Civil War)</b> — cuộc chiến nổi tiếng nhất thế kỷ 19 của Mỹ."},
+{id:92,cat:"hist",sub:"Những năm 1800",img:"lincoln",q_en:"Name the U.S. war between the North and the South.",a_en:["The Civil War"],q_vi:"Kể tên cuộc chiến ở Mỹ giữa miền Bắc và miền Nam.",a_vi:["Nội chiến"],meo:"💡 Mẹo: <b>Bắc đánh Nam = Nội chiến (Civil War)</b> — “civil” là nội bộ trong nước."},
+{id:93,cat:"hist",sub:"Những năm 1800",img:"lincoln",q_en:"The Civil War had many important events. Name one.",a_en:["The Emancipation Proclamation","The Battle of Gettysburg","Lincoln was assassinated"],q_vi:"Kể một sự kiện quan trọng trong Nội chiến.",a_vi:["Tuyên ngôn Giải phóng","Trận Gettysburg","Lincoln bị ám sát"],meo:"💡 Mẹo: Nhớ <b>Tuyên ngôn Giải phóng (Emancipation Proclamation)</b> của Lincoln."},
+{id:94,cat:"hist",sub:"Những năm 1800",img:"lincoln",q_en:"What was one important thing that Abraham Lincoln did?",a_en:["Freed the slaves","Saved (preserved) the Union","Led the United States during the Civil War"],q_vi:"Kể một việc quan trọng mà Abraham Lincoln đã làm.",a_vi:["Giải phóng nô lệ","Giữ vững sự thống nhất đất nước","Lãnh đạo nước Mỹ trong Nội chiến"],meo:"💡 Mẹo: Lincoln = <b>giải phóng nô lệ + giữ nước không bị chia cắt</b>. Tổng thống thứ 16, mặt trên tờ 5 đô."},
+{id:95,cat:"hist",sub:"Những năm 1800",img:"lincoln",q_en:"What did the Emancipation Proclamation do?",a_en:["Freed the slaves","Freed slaves in the Confederate (Southern) states"],q_vi:"Tuyên ngôn Giải phóng (Emancipation Proclamation) đã làm gì?",a_vi:["Giải phóng nô lệ","Giải phóng nô lệ ở các bang miền Nam"],meo:"💡 Mẹo: “Emancipation” = <b>giải phóng</b> — tuyên ngôn trả tự do cho nô lệ."},
+{id:96,cat:"hist",sub:"Những năm 1800",img:"lincoln",q_en:"What U.S. war ended slavery?",a_en:["The Civil War"],q_vi:"Cuộc chiến nào ở Mỹ đã chấm dứt chế độ nô lệ?",a_vi:["Nội chiến"],meo:"💡 Mẹo: Miền Bắc thắng <b>Nội chiến</b> → chế độ nô lệ chấm dứt."},
+{id:97,cat:"hist",sub:"Những năm 1800",img:"constitution",q_en:"What amendment says all persons born or naturalized in the United States are U.S. citizens?",a_en:["The 14th Amendment"],q_vi:"Tu chính án nào nói người sinh ra hoặc nhập tịch ở Mỹ đều là công dân Mỹ?",a_vi:["Tu chính án thứ 14"],meo:"💡 Mẹo: <b>Tu chính án 14: sinh ra ở Mỹ = công dân Mỹ</b> — con mình sinh ở Mỹ là công dân ngay."},
+{id:98,cat:"hist",sub:"Những năm 1800",img:"bell",q_en:"When did all men get the right to vote?",a_en:["After the Civil War","The 15th Amendment","1870"],q_vi:"Khi nào tất cả nam giới được quyền bầu cử?",a_vi:["Sau Nội chiến","Tu chính án thứ 15","Năm 1870"],meo:"💡 Mẹo: Sau Nội chiến, <b>Tu chính án 15 (1870)</b>: đàn ông mọi màu da được bầu cử."},
+{id:99,cat:"hist",sub:"Những năm 1800",img:"susan",q_en:"Name one leader of the women’s rights movement in the 1800s.",a_en:["Susan B. Anthony","Elizabeth Cady Stanton","Sojourner Truth"],q_vi:"Kể một nhà lãnh đạo phong trào đấu tranh cho quyền phụ nữ những năm 1800.",a_vi:["Susan B. Anthony","Elizabeth Cady Stanton","Sojourner Truth"],meo:"💡 Mẹo: Nhớ <b>Susan B. Anthony</b> — tên bà được in trên đồng xu 1 đô la."},
+{id:100,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Name one war fought by the United States in the 1900s.",a_en:["World War I","World War II","The Vietnam War","The Korean War","The (Persian) Gulf War"],q_vi:"Kể một cuộc chiến Mỹ tham gia trong những năm 1900.",a_vi:["Thế chiến I","Thế chiến II","Chiến tranh Việt Nam","Chiến tranh Triều Tiên","Chiến tranh vùng Vịnh"],meo:"💡 Mẹo: Nhớ <b>Thế chiến II (World War II)</b> — Mỹ đánh Đức, Ý, Nhật."},
+{id:101,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Why did the United States enter World War I?",a_en:["Because Germany attacked U.S. ships","To support the Allied Powers"],q_vi:"Tại sao Mỹ tham gia Thế chiến thứ nhất?",a_vi:["Vì Đức tấn công tàu của Mỹ","Để hỗ trợ phe Đồng minh"],meo:"💡 Mẹo: <b>Đức đánh tàu Mỹ</b> → Mỹ nổi giận nhảy vào Thế chiến I."},
+{id:102,cat:"hist",sub:"Lịch sử hiện đại",img:"bell",q_en:"When did all women get the right to vote?",a_en:["1920","After World War I","The 19th Amendment"],q_vi:"Khi nào tất cả phụ nữ được quyền bầu cử?",a_vi:["Năm 1920","Sau Thế chiến I","Tu chính án thứ 19"],meo:"💡 Mẹo: Nhớ cặp số liền nhau <b>19–20</b>: Tu chính án 19, năm 1920 — phụ nữ được bầu cử."},
+{id:103,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"What was the Great Depression?",a_en:["The longest economic recession in modern history"],q_vi:"Thời kỳ Đại Khủng hoảng là gì?",a_vi:["Thời kỳ suy thoái kinh tế kéo dài nhất trong lịch sử hiện đại"],meo:"💡 Mẹo: Đại Khủng hoảng = <b>suy thoái kinh tế dài và nặng nhất</b> lịch sử hiện đại — ngân hàng sập, người mất việc hàng loạt."},
+{id:104,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"When did the Great Depression start?",a_en:["1929","The stock market crash of 1929"],q_vi:"Đại Khủng hoảng bắt đầu khi nào?",a_vi:["Năm 1929","Vụ sụp đổ thị trường chứng khoán 1929"],meo:"💡 Mẹo: <b>1929</b> — thị trường chứng khoán sập, mở đầu Đại Khủng hoảng."},
+{id:105,cat:"hist",sub:"Lịch sử hiện đại",img:"fdr",q_en:"Who was President during the Great Depression and World War II?",a_en:["(Franklin) Roosevelt"],q_vi:"Ai là Tổng thống trong thời Đại Khủng hoảng và Thế chiến II?",a_vi:["Franklin Roosevelt"],meo:"💡 Mẹo: <b>Roosevelt</b> — tổng thống duy nhất làm 4 nhiệm kỳ, chèo lái nước Mỹ qua 2 cơn bão lớn."},
+{id:106,cat:"hist",sub:"Lịch sử hiện đại",img:"pearl",q_en:"Why did the United States enter World War II?",a_en:["(Bombing of) Pearl Harbor","Japan attacked Pearl Harbor","To support the Allied Powers"],q_vi:"Tại sao Mỹ tham gia Thế chiến thứ hai?",a_vi:["Vụ ném bom Trân Châu Cảng","Nhật Bản tấn công Trân Châu Cảng","Để hỗ trợ phe Đồng minh"],meo:"💡 Mẹo: <b>Nhật đánh Trân Châu Cảng (Pearl Harbor) năm 1941</b> → Mỹ vào Thế chiến II."},
+{id:107,cat:"hist",sub:"Lịch sử hiện đại",img:"eisenhower",q_en:"Dwight Eisenhower is famous for many things. Name one.",a_en:["General during World War II","34th president of the United States","Signed the Federal-Aid Highway Act of 1956"],q_vi:"Kể một việc nổi tiếng của Dwight Eisenhower.",a_vi:["Tướng trong Thế chiến II","Tổng thống thứ 34 Hoa Kỳ","Ký Đạo luật Xa lộ Liên bang 1956"],meo:"💡 Mẹo: Eisenhower: <b>tướng Thế chiến II → tổng thống thứ 34</b> — từ chiến trường lên Nhà Trắng."},
+{id:108,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Who was the United States’ main rival during the Cold War?",a_en:["The Soviet Union","The USSR","Russia"],q_vi:"Ai là đối thủ chính của Mỹ trong Chiến tranh Lạnh?",a_vi:["Liên Xô","Liên bang Xô Viết","Nga"],meo:"💡 Mẹo: Chiến tranh Lạnh = <b>Mỹ vs Liên Xô</b> — 2 siêu cường đối đầu không đánh trực tiếp."},
+{id:109,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"During the Cold War, what was one main concern of the United States?",a_en:["Communism","Nuclear war"],q_vi:"Trong Chiến tranh Lạnh, mối lo chính của Mỹ là gì?",a_vi:["Chủ nghĩa cộng sản","Chiến tranh hạt nhân"],meo:"💡 Mẹo: Mỹ lo 2 thứ: <b>cộng sản lan rộng + chiến tranh hạt nhân</b>."},
+{id:110,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Why did the United States enter the Korean War?",a_en:["To stop the spread of communism"],q_vi:"Tại sao Mỹ tham gia Chiến tranh Triều Tiên?",a_vi:["Để ngăn chặn sự lan rộng của chủ nghĩa cộng sản"],meo:"💡 Mẹo: Đánh Triều Tiên để <b>chặn cộng sản</b> — nhớ câu này, câu Việt Nam cũng y chang."},
+{id:111,cat:"hist",sub:"Lịch sử hiện đại",img:"vietmem",q_en:"Why did the United States enter the Vietnam War?",a_en:["To stop the spread of communism"],q_vi:"Tại sao Mỹ tham gia Chiến tranh Việt Nam?",a_vi:["Để ngăn chặn sự lan rộng của chủ nghĩa cộng sản"],meo:"💡 Mẹo: Đánh Việt Nam cũng để <b>chặn cộng sản</b> — đáp án giống hệt câu Triều Tiên."},
+{id:112,cat:"hist",sub:"Lịch sử hiện đại",img:"mlk",q_en:"What did the civil rights movement do?",a_en:["Fought to end racial discrimination"],q_vi:"Phong trào dân quyền đã làm gì?",a_vi:["Đấu tranh chấm dứt phân biệt chủng tộc"],meo:"💡 Mẹo: Phong trào dân quyền = <b>xóa phân biệt chủng tộc</b>, đòi bình đẳng cho người da đen."},
+{id:113,cat:"hist",sub:"Lịch sử hiện đại",img:"mlk",q_en:"Martin Luther King, Jr. is famous for many things. Name one.",a_en:["Fought for civil rights","Worked for equality for all Americans"],q_vi:"Kể một việc nổi tiếng của Martin Luther King Jr.",a_vi:["Đấu tranh vì dân quyền","Đấu tranh cho bình đẳng của mọi người Mỹ"],meo:"💡 Mẹo: MLK = lãnh tụ dân quyền, bài diễn văn <b>“I have a dream” (Tôi có một giấc mơ)</b>."},
+{id:114,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Why did the United States enter the Persian Gulf War?",a_en:["To force the Iraqi military from Kuwait"],q_vi:"Tại sao Mỹ tham gia Chiến tranh vùng Vịnh Ba Tư?",a_vi:["Để buộc quân đội Iraq rút khỏi Kuwait"],meo:"💡 Mẹo: <b>Iraq chiếm Kuwait</b> → Mỹ cùng đồng minh đánh đuổi Iraq ra."},
+{id:115,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"What major event happened on September 11, 2001, in the United States?",a_en:["Terrorists attacked the United States"],q_vi:"Sự kiện lớn nào xảy ra ngày 11/9/2001 ở Mỹ?",a_vi:["Khủng bố tấn công Hoa Kỳ"],meo:"💡 Mẹo: <b>11/9/2001</b> — khủng bố cướp máy bay đâm vào tháp đôi New York."},
+{id:116,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Name one U.S. military conflict after the September 11, 2001 attacks.",a_en:["The War in Afghanistan","The War in Iraq","The War on Terror"],q_vi:"Kể một cuộc xung đột quân sự của Mỹ sau vụ 11/9/2001.",a_vi:["Chiến tranh Afghanistan","Chiến tranh Iraq","Cuộc chiến chống khủng bố"],meo:"💡 Mẹo: Sau 11/9 Mỹ đánh <b>Afghanistan rồi Iraq</b> — nhớ “Afghanistan” trước."},
+{id:117,cat:"hist",sub:"Lịch sử hiện đại",img:"liberty",q_en:"Name one American Indian tribe in the United States.",a_en:["Cherokee","Apache","Creek","Crow","Sioux"],q_vi:"Kể tên một bộ tộc da đỏ bản địa ở Mỹ.",a_vi:["Cherokee","Apache","Creek","Crow","Sioux"],meo:"💡 Mẹo: Nhớ <b>Cherokee</b> — bộ tộc nổi tiếng nhất, xe Jeep cũng lấy tên này."},
+{id:118,cat:"hist",sub:"Lịch sử hiện đại",img:"flag",q_en:"Name one example of an American innovation.",a_en:["The light bulb","The airplane","Landing on the moon","The telephone"],q_vi:"Kể một phát minh của người Mỹ.",a_vi:["Bóng đèn","Máy bay","Đặt chân lên mặt trăng","Điện thoại"],meo:"💡 Mẹo: Chọn <b>bóng đèn (light bulb)</b> của Edison — phát minh ai cũng biết."},
+{id:119,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"capitol",q_en:"What is the capital of the United States?",a_en:["Washington, D.C."],q_vi:"Thủ đô của Hoa Kỳ là gì?",a_vi:["Washington, D.C."],meo:"💡 Mẹo: Thủ đô là <b>Washington, D.C.</b> — nhớ thêm “.D.C.”, đừng nhầm với <b>bang</b> Washington ở bờ Tây."},
+{id:120,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"liberty",q_en:"Where is the Statue of Liberty?",a_en:["New York","New York Harbor","Liberty Island"],q_vi:"Tượng Nữ thần Tự do ở đâu?",a_vi:["New York","Cảng New York","Đảo Liberty"],meo:"💡 Mẹo: Tượng Nữ thần Tự do ở <b>cảng New York</b> — món quà của Pháp tặng Mỹ."},
+{id:121,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"flag",q_en:"Why does the flag have 13 stripes?",a_en:["Because there were 13 original colonies","The stripes represent the original colonies"],q_vi:"Tại sao cờ Mỹ có 13 sọc?",a_vi:["Vì có 13 thuộc địa đầu tiên","Các sọc tượng trưng cho 13 thuộc địa"],meo:"💡 Mẹo: <b>13 sọc = 13 thuộc địa</b> đầu tiên — 7 sọc đỏ, 6 sọc trắng."},
+{id:122,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"flag",q_en:"Why does the flag have 50 stars?",a_en:["Because there are 50 states","Each star represents a state"],q_vi:"Tại sao cờ Mỹ có 50 ngôi sao?",a_vi:["Vì có 50 tiểu bang","Mỗi ngôi sao tượng trưng một bang"],meo:"💡 Mẹo: <b>50 sao = 50 bang</b> — mỗi sao một bang, thêm bang mới là thêm sao."},
+{id:123,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"flag",q_en:"What is the name of the national anthem?",a_en:["The Star-Spangled Banner"],q_vi:"Tên của bài quốc ca Mỹ là gì?",a_vi:["The Star-Spangled Banner"],meo:"💡 Mẹo: Quốc ca <b>“The Star-Spangled Banner”</b> — bài hát về lá cờ đầy sao bay trong đêm bị dội bom."},
+{id:124,cat:"sym",sub:"Biểu tượng nước Mỹ",img:"eagle",q_en:"The Nation’s first motto was “E Pluribus Unum.” What does that mean?",a_en:["Out of many, one"],q_vi:"Châm ngôn đầu tiên của nước Mỹ “E Pluribus Unum” nghĩa là gì?",a_vi:["Từ nhiều, hợp thành một"],meo:"💡 Mẹo: Tiếng Latin: <b>“từ nhiều thành một”</b> — nhiều bang, nhiều dân tộc hợp thành một nước Mỹ."},
+{id:125,cat:"sym",sub:"Ngày lễ liên bang",img:"flag",q_en:"What is Independence Day?",a_en:["The country’s birthday"],q_vi:"Ngày Độc lập là gì?",a_vi:["Ngày sinh nhật của đất nước"],meo:"💡 Mẹo: 4/7 là <b>“sinh nhật đất nước”</b> — cả nước nghỉ, bắn pháo bông."},
+{id:126,cat:"sym",sub:"Ngày lễ liên bang",img:"flag",q_en:"Name three national U.S. holidays.",a_en:["New Year’s Day","Independence Day","Thanksgiving","Christmas Day","Memorial Day","Labor Day"],q_vi:"Kể tên ba ngày lễ quốc gia của Mỹ.",a_vi:["Tết Dương lịch","Ngày Độc lập","Lễ Tạ ơn","Lễ Giáng sinh","Ngày Tưởng niệm","Ngày Lao động"],meo:"💡 Mẹo: Nhớ 3 cái chắc ăn nhất: <b>New Year’s Day – Independence Day – Christmas</b>."},
+{id:127,cat:"sym",sub:"Ngày lễ liên bang",img:"flag",q_en:"What is Memorial Day?",a_en:["A holiday to honor soldiers who died in military service"],q_vi:"Ngày Tưởng niệm (Memorial Day) là gì?",a_vi:["Ngày lễ vinh danh những người lính đã hy sinh khi phục vụ quân đội"],meo:"💡 Mẹo: <b>Memorial</b> = tưởng niệm → ngày nhớ <b>lính đã hy sinh</b> (người đã mất)."},
+{id:128,cat:"sym",sub:"Ngày lễ liên bang",img:"flag",q_en:"What is Veterans Day?",a_en:["A holiday to honor people in the U.S. military (veterans)"],q_vi:"Ngày Cựu chiến binh (Veterans Day) là gì?",a_vi:["Ngày lễ vinh danh những người đã và đang phục vụ trong quân đội Hoa Kỳ"],meo:"💡 Mẹo: <b>Veterans Day</b> vinh danh <b>cựu chiến binh còn sống</b> — khác Memorial Day (tưởng nhớ người đã mất)."}
+];
+
+/* ================= APP LOGIC ================= */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+const THEME_ICON={flag:"🇺🇸",constitution:"📜",hall:"🏛️",capitol:"🏛️",whitehouse:"🏠",court:"⚖️",liberty:"🗽",bell:"🔔",eagle:"🦅",lincoln:"🎩",washington:"🎩",jefferson:"📜",franklin:"🪁",mlk:"✊",susan:"👩‍🦳",fdr:"🎩",eisenhower:"⭐",pearl:"⚓",vietmem:"🎖️"};
+function imgFallback(el,key){const d=document.createElement("div");d.className="qimg-fallback";d.innerHTML="<span>"+(THEME_ICON[key]||"🇺🇸")+"</span>";el.replaceWith(d);}
+
+/* stars on splash */
+(function(){const w=$("#stars");for(let i=0;i<46;i++){const s=document.createElement("span");s.className="star";s.textContent="★";s.style.left=(Math.random()*100)+"%";s.style.top=(Math.random()*100)+"%";s.style.fontSize=(6+Math.random()*13)+"px";s.style.animationDelay=(Math.random()*2.6)+"s";w.appendChild(s);}})();
+
+/* store */
+let store={known:[],wrong:[]};
+try{const s=JSON.parse(localStorage.getItem("stvm-v1"));if(s&&Array.isArray(s.known))store=s;}catch(e){}
+function save(){try{localStorage.setItem("stvm-v1",JSON.stringify(store));}catch(e){}}
+function knownCount(ids){return ids.filter(id=>store.known.includes(id)).length;}
+function show(id){document.querySelectorAll("#app main > div").forEach(d=>d.classList.add("hidden"));$("#screen-"+id).classList.remove("hidden");window.scrollTo(0,0);}
+function enterApp(){const sp=$("#splash");if(sp.style.display==="none")return;sp.style.display="none";$("#app").classList.remove("hidden");renderHome();}
+setTimeout(enterApp,6000);
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  const total=QUESTIONS.length,kc=store.known.length,pct=Math.round(kc/total*100);
+  const catsHtml=CATS.map(c=>{
+    const ids=QUESTIONS.filter(q=>q.cat===c.id).map(q=>q.id);
+    const done=knownCount(ids);
+    return `<div class="cat" onclick="openCat('${c.id}')">
+      <div class="cat-ic" style="background:${c.color}">${c.icon}</div>
+      <div><h3>${c.name}</h3><p>${c.desc}</p>
+      <p style="color:var(--navy);font-weight:700;margin-top:3px">${done}/${ids.length} câu đã thuộc</p></div>
+      <div class="go">›</div></div>`;
+  }).join("");
+  const wcount=store.wrong.length;
+  $("#screen-home").innerHTML=`
+    <div class="hero"><h2>🇺🇸 Học thi quốc tịch Mỹ</h2>
+      <p>128 câu hỏi USCIS · nghe – nhìn – mẹo nhớ</p>
+      <div class="pbar"><i style="width:${pct}%"></i></div>
+      <div class="pmeta"><span>Đã thuộc <b>${kc}/${total}</b> câu</span><span>${pct}%</span></div>
+      <div class="btnrow"><button class="btn btn-red" onclick="continueStudy()">▶ Học tiếp</button>
+      <button class="btn btn-navy" onclick="startQuiz()">📝 Thi thử</button></div></div>
+    <div class="sect">CHỌN DANH MỤC ĐỂ HỌC</div>${catsHtml}
+    ${wcount?`<div class="sect">ÔN TẬP</div><div class="revcard" onclick="startReview()"><div style="font-size:32px">🔁</div><div><b>${wcount} câu cần ôn lại</b><span>Những câu cô chú chưa nhớ — ôn đến khi thuộc</span></div></div>`:""}
+    <div class="note">Mỗi câu có hình minh họa để liên tưởng, nút 🔊 nghe câu hỏi tiếng Anh,<br>và 💡 mẹo nhớ tiếng Việt. Mỗi ngày học 10 phút là đủ.</div>`;
+  show("home");
+}
+
+/* ---------- CATEGORY ---------- */
+function openCat(catId){
+  const c=CATS.find(x=>x.id===catId);
+  let html=`<div class="backrow"><button class="backbtn" onclick="renderHome()">‹</button><h2>${c.icon} ${c.name}</h2></div>`;
+  c.subs.forEach(sub=>{
+    const qs=QUESTIONS.filter(q=>q.cat===catId&&q.sub===sub);
+    html+=`<div class="subhead">${sub} · ${qs.length} câu</div>`;
+    qs.forEach(q=>{
+      const done=store.known.includes(q.id);
+      const idx=qs.findIndex(x=>x.id===q.id);
+      html+=`<div class="qrow${done?" done":""}" onclick='studyList([${qs.map(x=>x.id).join(",")}],${idx})'>
+        <div class="n">${q.id}</div><p>${esc(q.q_en)}</p><div class="st">${done?"✅":"⭕"}</div></div>`;
+    });
+  });
+  $("#screen-cat").innerHTML=html;show("cat");
+}
+
+/* ---------- STUDY / QUIZ ---------- */
+let queue=[],qi=0,qmode="study",qscore={ok:0};
+function studyList(ids,idx){queue=ids.slice();qi=idx||0;qmode="study";renderStudy();}
+function continueStudy(){
+  const rest=QUESTIONS.filter(q=>!store.known.includes(q.id)).map(q=>q.id);
+  studyList(rest.length?rest:QUESTIONS.map(q=>q.id),0);
+}
+function startReview(){if(!store.wrong.length)return;studyList(store.wrong.slice(),0);}
+function startQuiz(){
+  const ids=QUESTIONS.map(q=>q.id).sort(()=>Math.random()-0.5).slice(0,10);
+  queue=ids;qi=0;qmode="quiz";qscore={ok:0};renderStudy();
+}
+function renderStudy(){
+  const q=QUESTIONS.find(x=>x.id===queue[qi]);
+  const c=CATS.find(x=>x.id===q.cat);
+  const isQuiz=qmode==="quiz";
+  const noT=isQuiz?"✗ Chưa trả lời được":"✗ Chưa nhớ";
+  const yesT=isQuiz?"✓ Trả lời được":"✓ Nhớ rồi";
+  $("#screen-study").innerHTML=`
+   <div class="backrow"><button class="backbtn" onclick="renderHome()">‹</button>
+     <h2 style="font-size:15px">${isQuiz?"📝 Thi thử":c.icon+" "+q.sub}</h2></div>
+   <div class="sprog"><span>Câu ${qi+1}/${queue.length}</span><div class="pbar"><i style="width:${Math.round(qi/queue.length*100)}%"></i></div><span>#${q.id}</span></div>
+   <div class="scard">
+     <img class="qimg" src="${IMG[q.img]}" alt="" loading="lazy" onerror="imgFallback(this,'${q.img}')">
+     <div class="sbody">
+       <div class="qlabel">CÂU HỎI · QUESTION</div>
+       <div class="qen">${esc(q.q_en)}</div>
+       <button class="speakbtn" onclick="speak(${q.id},'q')">🔊 Nghe câu hỏi</button>
+       <div id="ans" class="hidden">
+         <div class="answer">
+           <div class="qlabel" style="color:var(--ok)">TRẢ LỜI · ANSWER</div>
+           <div>${q.a_en.map(a=>`<span class="achip">${esc(a)}</span>`).join("")}</div>
+           <div style="margin-top:4px"><button class="speakbtn" onclick="speak(${q.id},'a')">🔊 Nghe câu trả lời</button></div>
+           <div class="trbox">🇻🇳 <b>${esc(q.q_vi)}</b><div class="tvi">→ ${q.a_vi.map(esc).join(" · ")}</div></div>
+           <div class="meo">${q.meo}</div>
+         </div>
+         <div class="grade">
+           <button class="gbtn g-no" onclick="grade(false)">${noT}</button>
+           <button class="gbtn g-yes" onclick="grade(true)">${yesT}</button>
+         </div>
+       </div>
+       <button id="rvbtn" class="revealbtn" onclick="document.getElementById('ans').classList.remove('hidden');this.style.display='none'">👁 Xem đáp án + mẹo nhớ</button>
+     </div>
+   </div>`;
+  show("study");
+}
+function grade(ok){
+  const id=queue[qi];
+  if(ok){if(!store.known.includes(id))store.known.push(id);store.wrong=store.wrong.filter(x=>x!==id);if(qmode==="quiz")qscore.ok++;}
+  else{if(!store.wrong.includes(id))store.wrong.push(id);store.known=store.known.filter(x=>x!==id);}
+  save();
+  if(qi<queue.length-1){qi++;renderStudy();}
+  else if(qmode==="quiz"){showQuizResult();}
+  else{finishList();}
+}
+function finishList(){
+  $("#screen-study").innerHTML=`<div class="scorewrap"><div style="font-size:64px">🎉</div>
+    <h2>Tuyệt vời!</h2><p>Cô chú đã học hết danh sách này.<br>Nhớ ôn lại những câu chưa nhớ nhé.</p>
+    <button class="btn btn-red" style="max-width:280px;margin:0 auto" onclick="renderHome()">Về trang chủ</button></div>`;
+  show("study");
+}
+function showQuizResult(){
+  const ok=qscore.ok,total=queue.length,pct=Math.round(ok/total*100);
+  const msg=pct>=80?"Xuất sắc! Cô chú đã sẵn sàng đi thi rồi 🎉":pct>=60?"Khá tốt! Ôn thêm chút nữa là đậu 💪":"Đừng nản! Bấm “Ôn câu sai” để học lại nhé 📚";
+  const wrongIds=queue.filter(id=>store.wrong.includes(id));
+  $("#screen-study").innerHTML=`<div class="scorewrap">
+    <div class="big">${ok}/${total}</div><h2>${msg}</h2><p>Điểm thi thử: ${pct}%</p>
+    <div class="btnrow" style="max-width:340px;margin:0 auto">
+      ${wrongIds.length?`<button class="btn btn-navy" onclick='studyList([${wrongIds.join(",")}],0)'>📖 Ôn câu sai</button>`:""}
+      <button class="btn btn-red" onclick="startQuiz()">🔄 Thi lại</button></div>
+    <div style="margin-top:12px"><button class="btn btn-ghost" style="max-width:340px;margin:0 auto" onclick="renderHome()">Về trang chủ</button></div>
+  </div>`;
+  show("study");
+}
+function speak(id,which){
+  try{
+    speechSynthesis.cancel();
+    const q=QUESTIONS.find(x=>x.id===id);
+    const text=which==="q"?q.q_en:q.a_en.join(". ");
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-US";u.rate=0.85;
+    const vs=speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.indexOf("en")===0);
+    if(vs.length)u.voice=vs[0];
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+</script>
+</body>
+</html>
