@@ -106,6 +106,19 @@ main{flex:1;padding:16px 16px 34px}
 .g-yes{background:#e6f7ef;color:var(--ok);border:2px solid #bfe8d2}
 .gbtn:active{transform:scale(.96)}
 
+/* quiz options */
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;border:2px solid #dbe4f7;border-radius:14px;padding:13px 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;line-height:1.5;width:100%}
+.opt-letter{width:32px;height:32px;border-radius:50%;background:#eaf0fd;color:var(--navy);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-ok{border-color:var(--ok);background:#e6f7ef}
+.opt-ok .opt-letter{background:var(--ok);color:#fff}
+.opt-bad{border-color:var(--red);background:#fdecec}
+.opt-bad .opt-letter{background:var(--red);color:#fff}
+.opt:disabled{cursor:default;opacity:1}
+.qres{font-size:17px;font-weight:800;margin:16px 0 10px}
+.qres-ok{color:var(--ok)}
+.qres-bad{color:var(--red)}
+#qexp{animation:fade .3s}
 /* quiz end */
 .scorewrap{text-align:center;padding:30px 10px}
 .scorewrap .big{font-size:72px;font-weight:900;color:var(--navy)}
@@ -372,30 +385,89 @@ function openCat(catId){
 }
 
 /* ---------- STUDY / QUIZ ---------- */
-let queue=[],qi=0,qmode="study",qscore={ok:0};
+let queue=[],qi=0,qmode="study",qscore={ok:0},qopts=[],qanswered=false;
 function studyList(ids,idx){queue=ids.slice();qi=idx||0;qmode="study";renderStudy();}
 function continueStudy(){
   const rest=QUESTIONS.filter(q=>!store.known.includes(q.id)).map(q=>q.id);
   studyList(rest.length?rest:QUESTIONS.map(q=>q.id),0);
 }
 function startReview(){if(!store.wrong.length)return;studyList(store.wrong.slice(),0);}
+/* ---- QUIZ: trắc nghiệm 4 đáp án ---- */
+const QUIZ_SKIP=[23,29,61,62]; /* câu đáp án theo bang/khu vực */
 function startQuiz(){
-  const ids=QUESTIONS.map(q=>q.id).sort(()=>Math.random()-0.5).slice(0,10);
-  queue=ids;qi=0;qmode="quiz";qscore={ok:0};renderStudy();
+  const pool=QUESTIONS.filter(q=>QUIZ_SKIP.indexOf(q.id)<0).map(q=>q.id).sort(()=>Math.random()-0.5).slice(0,10);
+  queue=pool;qi=0;qmode="quiz";qscore={ok:0};
+  qopts=makeOptions(QUESTIONS.find(x=>x.id===pool[0]));qanswered=false;
+  renderStudy();
+}
+function normAns(s){return String(s).replace(/[()]/g,"").trim();}
+function makeOptions(q){
+  const correct=normAns(q.a_en[0]);
+  const isNum=/\d/.test(correct);
+  const seen={};seen[correct.toLowerCase()]=1;
+  const cand=[];
+  const collect=(list)=>{
+    const arr=list.slice().sort(()=>Math.random()-0.5);
+    for(const o of arr){
+      if(o.id===q.id)continue;
+      const t=normAns(o.a_en[0]); /* mỗi câu chỉ góp 1 đáp án nhiễu */
+      if(!t||t.length>70||/answer depends/i.test(t))continue;
+      const tl=t.toLowerCase();
+      if(seen[tl])continue;
+      seen[tl]=1;cand.push(t);
+      if(cand.length>=12)break;
+    }
+  };
+  const sameCat=QUESTIONS.filter(o=>o.cat===q.cat);
+  collect(sameCat.filter(o=>isNum?/\d/.test(normAns(o.a_en[0])):!/\d/.test(normAns(o.a_en[0])))); /* cùng loại */
+  if(cand.length<3)collect(sameCat);
+  if(cand.length<3)collect(QUESTIONS);
+  const distracts=cand.slice(0,3);
+  while(distracts.length<3)distracts.push(["1776","1787","50 states"][distracts.length]);
+  const opts=[{t:correct,ok:true}].concat(distracts.map(t=>({t:t,ok:false})));
+  return opts.sort(()=>Math.random()-0.5);
+}
+function answerQuiz(i){
+  if(qanswered)return;qanswered=true;
+  const id=queue[qi],q=QUESTIONS.find(x=>x.id===id);
+  const ci=qopts.findIndex(o=>o.ok);
+  document.querySelectorAll("#opts .opt").forEach((b,j)=>{
+    b.disabled=true;
+    if(j===ci)b.classList.add("opt-ok");else if(j===i)b.classList.add("opt-bad");
+  });
+  const good=(i===ci);
+  if(good){if(!store.known.includes(id))store.known.push(id);store.wrong=store.wrong.filter(x=>x!==id);qscore.ok++;}
+  else{if(!store.wrong.includes(id))store.wrong.push(id);store.known=store.known.filter(x=>x!==id);}
+  save();
+  const exp=document.getElementById("qexp");
+  exp.classList.remove("hidden");
+  exp.innerHTML=
+    `<div class="qres ${good?"qres-ok":"qres-bad"}">${good?"✅ Đúng rồi, giỏi lắm!":"❌ Chưa đúng. Đáp án đúng là:"}</div>`+
+    (good?"":`<div style="margin-bottom:6px">${q.a_en.map(a=>`<span class="achip">${esc(a)}</span>`).join("")}</div>`)+
+    `<button class="speakbtn" onclick="speak(${q.id},'a')">🔊 Nghe câu trả lời</button>
+     <div class="trbox">🇻🇳 <b>${esc(q.q_vi)}</b><div class="tvi">→ ${q.a_vi.map(esc).join(" · ")}</div></div>
+     <div class="meo">${q.meo}</div>
+     <button class="revealbtn" onclick="nextQuiz()">${qi<queue.length-1?"Câu tiếp theo →":"Xem kết quả →"}</button>`;
+  exp.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function nextQuiz(){
+  if(qi<queue.length-1){qi++;qopts=makeOptions(QUESTIONS.find(x=>x.id===queue[qi]));qanswered=false;renderStudy();}
+  else showQuizResult();
 }
 function renderStudy(){
   const q=QUESTIONS.find(x=>x.id===queue[qi]);
   const c=CATS.find(x=>x.id===q.cat);
   const isQuiz=qmode==="quiz";
-  const noT=isQuiz?"✗ Chưa trả lời được":"✗ Chưa nhớ";
-  const yesT=isQuiz?"✓ Trả lời được":"✓ Nhớ rồi";
-  $("#screen-study").innerHTML=`
-   <div class="backrow"><button class="backbtn" onclick="renderHome()">‹</button>
-     <h2 style="font-size:15px">${isQuiz?"📝 Thi thử":c.icon+" "+q.sub}</h2></div>
-   <div class="sprog"><span>Câu ${qi+1}/${queue.length}</span><div class="pbar"><i style="width:${Math.round(qi/queue.length*100)}%"></i></div><span>#${q.id}</span></div>
-   <div class="scard">
-     <img class="qimg" src="${IMG[q.img]}" alt="" loading="lazy" onerror="imgFallback(this,'${q.img}')">
-     <div class="sbody">
+  const letters=["A","B","C","D"];
+  const quizBody=`
+       <div class="qlabel">CHỌN ĐÁP ÁN ĐÚNG · MULTIPLE CHOICE</div>
+       <div class="qen">${esc(q.q_en)}</div>
+       <button class="speakbtn" onclick="speak(${q.id},'q')">🔊 Nghe câu hỏi</button>
+       <div class="opts" id="opts">
+         ${qopts.map((o,i)=>`<button class="opt" onclick="answerQuiz(${i})"><span class="opt-letter">${letters[i]}</span><span>${esc(o.t)}</span></button>`).join("")}
+       </div>
+       <div id="qexp" class="hidden"></div>`;
+  const studyBody=`
        <div class="qlabel">CÂU HỎI · QUESTION</div>
        <div class="qen">${esc(q.q_en)}</div>
        <button class="speakbtn" onclick="speak(${q.id},'q')">🔊 Nghe câu hỏi</button>
@@ -408,22 +480,27 @@ function renderStudy(){
            <div class="meo">${q.meo}</div>
          </div>
          <div class="grade">
-           <button class="gbtn g-no" onclick="grade(false)">${noT}</button>
-           <button class="gbtn g-yes" onclick="grade(true)">${yesT}</button>
+           <button class="gbtn g-no" onclick="grade(false)">✗ Chưa nhớ</button>
+           <button class="gbtn g-yes" onclick="grade(true)">✓ Nhớ rồi</button>
          </div>
        </div>
-       <button id="rvbtn" class="revealbtn" onclick="document.getElementById('ans').classList.remove('hidden');this.style.display='none'">👁 Xem đáp án + mẹo nhớ</button>
-     </div>
+       <button id="rvbtn" class="revealbtn" onclick="document.getElementById('ans').classList.remove('hidden');this.style.display='none'">👁 Xem đáp án + mẹo nhớ</button>`;
+  $("#screen-study").innerHTML=`
+   <div class="backrow"><button class="backbtn" onclick="renderHome()">‹</button>
+     <h2 style="font-size:15px">${isQuiz?"📝 Thi thử trắc nghiệm":c.icon+" "+q.sub}</h2></div>
+   <div class="sprog"><span>Câu ${qi+1}/${queue.length}</span><div class="pbar"><i style="width:${Math.round(qi/queue.length*100)}%"></i></div><span>#${q.id}</span></div>
+   <div class="scard">
+     <img class="qimg" src="${IMG[q.img]}" alt="" loading="lazy" onerror="imgFallback(this,'${q.img}')">
+     <div class="sbody">${isQuiz?quizBody:studyBody}</div>
    </div>`;
   show("study");
 }
 function grade(ok){
   const id=queue[qi];
-  if(ok){if(!store.known.includes(id))store.known.push(id);store.wrong=store.wrong.filter(x=>x!==id);if(qmode==="quiz")qscore.ok++;}
+  if(ok){if(!store.known.includes(id))store.known.push(id);store.wrong=store.wrong.filter(x=>x!==id);}
   else{if(!store.wrong.includes(id))store.wrong.push(id);store.known=store.known.filter(x=>x!==id);}
   save();
   if(qi<queue.length-1){qi++;renderStudy();}
-  else if(qmode==="quiz"){showQuizResult();}
   else{finishList();}
 }
 function finishList(){
@@ -434,10 +511,11 @@ function finishList(){
 }
 function showQuizResult(){
   const ok=qscore.ok,total=queue.length,pct=Math.round(ok/total*100);
-  const msg=pct>=80?"Xuất sắc! Cô chú đã sẵn sàng đi thi rồi 🎉":pct>=60?"Khá tốt! Ôn thêm chút nữa là đậu 💪":"Đừng nản! Bấm “Ôn câu sai” để học lại nhé 📚";
+  const pass=ok>=6;
+  const msg=pass?"🎉 CHÚC MỪNG — CÔ CHÚ ĐẬU RỒI!":"Chưa đậu lần này — ôn thêm rồi thi lại nhé 💪";
   const wrongIds=queue.filter(id=>store.wrong.includes(id));
   $("#screen-study").innerHTML=`<div class="scorewrap">
-    <div class="big">${ok}/${total}</div><h2>${msg}</h2><p>Điểm thi thử: ${pct}%</p>
+    <div class="big">${ok}/${total}</div><h2>${msg}</h2><p>Đúng ${ok}/${total} câu (cần ≥ 6/10 để đậu) · ${pct}%</p>
     <div class="btnrow" style="max-width:340px;margin:0 auto">
       ${wrongIds.length?`<button class="btn btn-navy" onclick='studyList([${wrongIds.join(",")}],0)'>📖 Ôn câu sai</button>`:""}
       <button class="btn btn-red" onclick="startQuiz()">🔄 Thi lại</button></div>
